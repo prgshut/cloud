@@ -27,12 +27,12 @@ public class ConnectServer {
                 String read = scanner.nextLine();
                 String[] commandRead = read.split(" ", 2);
                 if (commandRead[0].equals("\\in")) {
-                    writeFileServer(read, socket);  //отправить файл на сервер
+                    writeFileServer(read);  //отправить файл на сервер
                 } else if (commandRead[0].equals( "\\out")) {
-                    readFileServer(read, socket);  //получить файл с сервера
+                    readFileServer(read);  //получить файл с сервера
 
                 } else if (commandRead[0].equals("\\info")) {
-                    infoFileServer(read, socket);
+                    infoFileServer(read);
                 }
             }
         } catch (IOException e) {
@@ -42,21 +42,18 @@ public class ConnectServer {
 
     }
 
-    private void infoFileServer(String read, Socket socket) {
+    private void infoFileServer(String read) {
         try  {
             out.writeUTF(read);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try(DataInputStream in = new DataInputStream(socket.getInputStream())){
-            System.out.println(in.readUTF());
+            String infoFolder = in.readUTF();
+            System.out.println(infoFolder);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // отправляем файл на сервер
-    private void writeFileServer(String read, Socket socket) throws FileNotFoundException {
+    private void writeFileServer(String read) throws FileNotFoundException {
         String[] commandRead = read.split(" ", 2);
         File file = new File(path + commandRead[1]);
         InputStream is = new FileInputStream(file);
@@ -83,7 +80,7 @@ public class ConnectServer {
     }
 
     // получаем файл с сервера
-    private void readFileServer(String read, Socket socket) {
+    private void readFileServer(String read) {
         String[] commandRead = read.split(" ", 2);
         File file = new File(path + commandRead[1]);
         try {
