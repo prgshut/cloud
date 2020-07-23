@@ -8,15 +8,21 @@ public class ClientWork {
     private DataOutputStream out;
     private final int nameClient;
     private static final int BYTE_TRANSFER = 256;
+    String path ;
 
 
     public ClientWork(Socket clientSocket, int nameClient) {
         this.clientSocket = clientSocket;
         this.nameClient=nameClient;
+        path= "./server/"+nameClient+"/";
         
     }
 
     public void job() {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdir();
+        }
         try {
             in= new DataInputStream(clientSocket.getInputStream());
             out=new DataOutputStream(clientSocket.getOutputStream());
@@ -24,7 +30,7 @@ public class ClientWork {
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
-            clientClose();
+//            clientClose();
         }
 
     }
@@ -33,12 +39,12 @@ public class ClientWork {
         try {
             String read=in.readUTF();
             String[] commandRead=read.split(" ", 2);
-            if(commandRead[0]=="\\in"){
+            if(commandRead[0].equals("\\in")){
                 writeFileServer(commandRead[1]); // получаем файл от клиента
-            }else if (commandRead[0]=="\\out"){
+            }else if (commandRead[0].equals("\\out")){
                 readFileServer(commandRead[1]); //отправляем файл клиенту
 
-            }else if(commandRead[0]=="\\info"){
+            }else if(commandRead[0].equals("\\info")){
                 infoFileServer();
             }
         } catch (IOException e) {
@@ -48,8 +54,7 @@ public class ClientWork {
     }
 
     private void infoFileServer() {
-        String path = "./common/server/"+nameClient+"/";
-        File dir = new File(path);
+         File dir = new File(path);
         StringBuffer info = null;
         if(dir.isDirectory())
         {
@@ -70,7 +75,7 @@ public class ClientWork {
     }
     //отправляем файл клиенту
     private void readFileServer(String nameFile)  {
-        String path = "./common/server/"+nameClient+"/";
+
         File file = new File(path+nameFile);
         InputStream is = null;
         try {
@@ -107,7 +112,7 @@ public class ClientWork {
     }
     // получаем файл от клиента
     private void writeFileServer(String nameFile) {
-        String path = "./common/server/"+nameClient+"/";
+
 
         System.out.println("fileName: " + nameFile);
         File file = new File(path + nameFile);
@@ -116,6 +121,7 @@ public class ClientWork {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("createNewFile " + nameFile);
         try (FileOutputStream os = new FileOutputStream(file)) {
             byte[] buffer = new byte[BYTE_TRANSFER];
             while (true) {
@@ -123,6 +129,7 @@ public class ClientWork {
                 if (r == -1) break;
                 os.write(buffer, 0, r);
             }
+            System.out.println("write file  " + nameFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
