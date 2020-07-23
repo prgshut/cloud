@@ -56,11 +56,11 @@ public class ConnectServer {
     private void writeFileServer(String read) throws FileNotFoundException {
         String[] commandRead = read.split(" ", 2);
         File file = new File(path + commandRead[1]);
-        InputStream is = new FileInputStream(file);
+
         long size = file.length();
 //        int count = (int) (size / BYTE_TRANSFER) / 10, readBuckets = 0;
         // /==========/
-        try {
+        try (InputStream is = new FileInputStream(file)){
             byte[] buffer = new byte[BYTE_TRANSFER];
             out.writeUTF(read);
             System.out.print("/");

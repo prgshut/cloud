@@ -60,10 +60,10 @@ public class ClientWork {
         {
             for(File item : dir.listFiles()){
                 if(item.isDirectory()){
-                   info.append(item.getName() + "  \t folder");
+                   info.append(item.getName() + " folder");
                 }
                 else{
-                    info.append(item.getName() + "\t file");
+                    info.append(item.getName() + " file");
                 }
             }
         }
