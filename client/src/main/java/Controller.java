@@ -18,6 +18,8 @@ public class Controller implements Initializable {
     private DataInputStream is;
     private DataOutputStream os;
     private final String clientFilesPath = "./client/clientFiles";
+    private static int clientName=0;
+    private File dir;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -25,10 +27,14 @@ public class Controller implements Initializable {
             socket = new Socket("localhost", 8189);
             is = new DataInputStream(socket.getInputStream());
             os = new DataOutputStream(socket.getOutputStream());
+            clientName++;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        File dir = new File(clientFilesPath);
+        dir = new File(clientFilesPath+"/"+clientName);
+        if (!dir.exists()){
+            dir.mkdir();
+        }
         for (String file : dir.list()) {
             lv.getItems().add(file);
         }
@@ -46,7 +52,7 @@ public class Controller implements Initializable {
                 String response = String.valueOf(is.read(buffer));
                 System.out.println("resp: " + response);
                 if (response.equals("OK")) {
-                    File file = new File(clientFilesPath + "/" + op[1]);
+                    File file = new File(dir + "/" + op[1]);
                     if (!file.exists()) {
                         file.createNewFile();
                     }

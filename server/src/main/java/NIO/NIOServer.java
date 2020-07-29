@@ -74,7 +74,7 @@ public class NIOServer implements Runnable {
     }
     private void createHomeDir() throws IOException {
         clientNum += 1;
-        serverPath = Paths.get("CloudServer/data");
+        serverPath = Paths.get("./server/data");
         clientPath = Paths.get(serverPath+"/client" +clientNum);
         if (!Files.exists(clientPath)) {
             Files.createDirectory(clientPath);
