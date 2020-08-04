@@ -1,3 +1,4 @@
+import io.netty.buffer.ByteBuf;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -45,36 +47,35 @@ public class Controller implements Initializable {
     public void sendCommand(ActionEvent actionEvent) {
         String command = txt.getText();
         String [] op = command.split(" ");
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024) ;
+
         byte [] buffer = new byte[1024];
-        if (op[0].equals("./dow")) {
+        if (op[0].equals("/put")) {
             try {
-                os.write(command.getBytes());
+                StringBuffer com = new StringBuffer();
+                com.append("/put").append(" ").append(dir.length()).append(" ").append(op[1]);
+                os.write(com.toString().getBytes());
+                System.out.println(com.toString());
                 String response = String.valueOf(is.read(buffer));
                 System.out.println("resp: " + response);
-                if (response.equals("OK")) {
+                if (response.equals("wait file")) {
                     File file = new File(dir + "/" + op[1]);
                     if (!file.exists()) {
                         file.createNewFile();
                     }
-                    long len = is.readLong();
-
-                    try(FileOutputStream fos = new FileOutputStream(file)) {
-                        if (len < 1024) {
-                            int count = is.read(buffer);
-                            fos.write(buffer, 0, count);
-                        } else {
-                            for (long i = 0; i < len / 1024; i++) {
-                                int count = is.read(buffer);
-                                fos.write(buffer, 0, count);
+                    System.out.println(file.toString());
+                    try(FileInputStream fin = new FileInputStream(file)) {
+                            while (fin.available()>0) {
+                                int count=fin.read(buffer);
+                                os.write(buffer, 0,count);
                             }
-                        }
                     }
                     lv.getItems().add(op[1]);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (op[0].equals("./upl")) {
+        } else if (op[0].equals("/get")) {
 
             try {
                 os.write(command.getBytes());
