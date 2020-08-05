@@ -30,10 +30,10 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
         if (dat[0].equals("/fin")) {
             FileChannel fileChannel = FileChannel.open(path);
             if (fileChannel.size() == size) {
-                ctx.writeAndFlush("OK");
+                ctx.writeAndFlush("OK".getBytes());
                 fileChannel.close();
             } else {
-                ctx.writeAndFlush("ERR_FILES");
+                ctx.writeAndFlush("ERR_FILES".getBytes());
             }
             isPut = false;
             fout.close();
@@ -42,20 +42,25 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
         if (isPut) {
             fout = new FileOutputStream(dir + nameFile);
             fout.write(data);
-            ctx.writeAndFlush("block received\n");
+            ctx.writeAndFlush(data);
+            ctx.writeAndFlush("block received".getBytes());
         } else {
             if (dat[0].equals("/put")) {
                 System.out.println(new String(data));
                 size = Long.parseLong(dat[1]);
                 nameFile = dat[2];
-                isPut = true;
+//                isPut = true;
                 path = Paths.get(dir, nameFile);
 
                 if (!Files.exists(path)) {
                     File file = new File(dir + nameFile);
                     file.createNewFile();
                 }
-                ctx.writeAndFlush("wait file\n");
+                ctx.writeAndFlush("wait_file".getBytes());
+
+                System.out.println("Отравили ответ ");
+//                ctx.flush();
+                System.out.println("Отравили ответ 1");
             } else if (dat[0].equals("/get")) {
                 ctx.fireChannelRead(data);
             } else {

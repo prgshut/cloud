@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
 
@@ -22,6 +23,7 @@ public class Controller implements Initializable {
     private final String clientFilesPath = "./client/clientFiles";
     private static int clientName=0;
     private File dir;
+    Scanner in;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -30,6 +32,7 @@ public class Controller implements Initializable {
             is = new DataInputStream(socket.getInputStream());
             os = new DataOutputStream(socket.getOutputStream());
             clientName++;
+            in = new Scanner(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,16 +52,18 @@ public class Controller implements Initializable {
         String [] op = command.split(" ");
         ByteBuffer byteBuf = ByteBuffer.allocate(1024) ;
 
-        byte [] buffer = new byte[1024];
+        byte [] buffer ;
+//        System.out.println("start buffer "+ buffer);
         if (op[0].equals("/put")) {
             try {
                 StringBuffer com = new StringBuffer();
                 com.append("/put").append(" ").append(dir.length()).append(" ").append(op[1]);
                 os.write(com.toString().getBytes());
                 System.out.println(com.toString());
-                String response = String.valueOf(is.read(buffer));
+                is.read(buffer);
+                String response =new String(buffer);
                 System.out.println("resp: " + response);
-                if (response.equals("wait file")) {
+                if (response.equals("wait_file")) {
                     File file = new File(dir + "/" + op[1]);
                     if (!file.exists()) {
                         file.createNewFile();
@@ -69,10 +74,11 @@ public class Controller implements Initializable {
                                 int count=fin.read(buffer);
                                 os.write(buffer, 0,count);
                             }
+                        System.out.println("File OUT");
                     }
                     lv.getItems().add(op[1]);
                 }
-            } catch (IOException e) {
+            } catch (IOException  e) {
                 e.printStackTrace();
             }
         } else if (op[0].equals("/get")) {

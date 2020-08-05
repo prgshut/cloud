@@ -10,10 +10,12 @@ import io.netty.util.concurrent.EventExecutorGroup;
 public class OutByteBufHandel extends ChannelOutboundHandlerAdapter {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        byte[] arr= (byte[]) msg;
+        System.out.println("Вошли в отправку");
+        byte[] arr= (byte[])msg;
         ByteBuf buf=ctx.alloc().buffer(arr.length);
         buf.writeBytes(arr);
-        ctx.writeAndFlush(arr);
+        ctx.writeAndFlush(buf);
+        buf.release();
 
     }
 
