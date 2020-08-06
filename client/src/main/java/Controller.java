@@ -73,21 +73,20 @@ public class Controller implements Initializable {
                     System.out.println(file.toString());
                     try(FileInputStream fin = new FileInputStream(file)) {
                         while (fin.available()>0) {
+                            if(fin.read()==-1){
+                                os.write("/fin".getBytes());
+                                fin.close();
+                                break;
+                            }
                             int count=fin.read(buffer);
                             os.write(buffer, 0,count);
                             }
                         System.out.println("File OUT");
                     }
 
-                        Thread.sleep(100);
-
-                    os.write("/fin".getBytes());
-
                     lv.getItems().add(op[1]);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else if (op[0].equals("/get")) {
