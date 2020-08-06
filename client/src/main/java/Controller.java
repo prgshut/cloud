@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import javax.swing.plaf.TableHeaderUI;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
@@ -52,7 +53,7 @@ public class Controller implements Initializable {
         String [] op = command.split(" ");
         ByteBuffer byteBuf = ByteBuffer.allocate(1024) ;
 
-        byte [] buffer ;
+        byte [] buffer = new  byte[1024];
 //        System.out.println("start buffer "+ buffer);
         if (op[0].equals("/put")) {
             try {
@@ -61,8 +62,9 @@ public class Controller implements Initializable {
                 os.write(com.toString().getBytes());
                 System.out.println(com.toString());
                 is.read(buffer);
-                String response =new String(buffer);
-                System.out.println("resp: " + response);
+                int i = (int) buffer[0];
+                String response =new String(buffer).trim();
+                System.out.println("resp: " + response+" "+i);
                 if (response.equals("wait_file")) {
                     File file = new File(dir + "/" + op[1]);
                     if (!file.exists()) {
@@ -70,15 +72,22 @@ public class Controller implements Initializable {
                     }
                     System.out.println(file.toString());
                     try(FileInputStream fin = new FileInputStream(file)) {
-                            while (fin.available()>0) {
-                                int count=fin.read(buffer);
-                                os.write(buffer, 0,count);
+                        while (fin.available()>0) {
+                            int count=fin.read(buffer);
+                            os.write(buffer, 0,count);
                             }
                         System.out.println("File OUT");
                     }
+
+                        Thread.sleep(100);
+
+                    os.write("/fin".getBytes());
+
                     lv.getItems().add(op[1]);
                 }
-            } catch (IOException  e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else if (op[0].equals("/get")) {

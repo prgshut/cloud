@@ -1,12 +1,11 @@
 package netty;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,45 +26,39 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
         byte[] data = (byte[]) msg;
         String[] dat = new String(data).split(" ");
 
-        if (dat[0].equals("/fin")) {
-            FileChannel fileChannel = FileChannel.open(path);
-            if (fileChannel.size() == size) {
-                ctx.writeAndFlush("OK".getBytes());
-                fileChannel.close();
-            } else {
-                ctx.writeAndFlush("ERR_FILES".getBytes());
-            }
-            isPut = false;
-            fout.close();
-        }
-
-        if (isPut) {
+        if (dat.length>2) {
+            commDat(ctx, data, dat);
+        }else{
             fout = new FileOutputStream(dir + nameFile);
-            fout.write(data);
-            ctx.writeAndFlush(data);
-            ctx.writeAndFlush("block received".getBytes());
-        } else {
-            if (dat[0].equals("/put")) {
-                System.out.println(new String(data));
-                size = Long.parseLong(dat[1]);
-                nameFile = dat[2];
-//                isPut = true;
-                path = Paths.get(dir, nameFile);
-
-                if (!Files.exists(path)) {
-                    File file = new File(dir + nameFile);
-                    file.createNewFile();
-                }
-                ctx.writeAndFlush("wait_file".getBytes());
-
-                System.out.println("Отравили ответ ");
-//                ctx.flush();
-                System.out.println("Отравили ответ 1");
-            } else if (dat[0].equals("/get")) {
-                ctx.fireChannelRead(data);
-            } else {
-                ctx.writeAndFlush("ERR command\n");
+            if (data.length==4 && data[0]==47){
+                System.out.println("Конец передачи");
+//                ctx.writeAndFlush("file ok".getBytes());
+            }else {
+                System.out.println(Arrays.toString(data));
+//                System.out.println(new String(data));
+                fout.write(data);
+            fout.close();
             }
+//            ctx.writeAndFlush("block received".getBytes());
+        }
+    }
+
+    private void commDat(ChannelHandlerContext ctx, byte[] data, String[] dat) throws IOException {
+        if (dat[0].equals("/put")) {
+            System.out.println(new String(data));
+            size = Long.parseLong(dat[1]);
+            nameFile = dat[2];
+            path = Paths.get(dir, nameFile);
+
+            if (!Files.exists(path)) {
+                File file = new File(dir + nameFile);
+                file.createNewFile();
+            }
+            ctx.writeAndFlush("wait_file".getBytes());
+        } else if (dat[0].equals("/get")) {
+            ctx.fireChannelRead(data);
+        } else {
+            ctx.writeAndFlush("ERR command\n");
         }
     }
 
