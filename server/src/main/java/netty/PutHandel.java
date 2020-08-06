@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class PutHandel extends ChannelInboundHandlerAdapter {
-    private boolean isPut = false;
+
     long size;
     String nameFile;
     String dir = "serverClient/";
@@ -29,7 +29,7 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
         if (dat.length>2) {
             commDat(ctx, data, dat);
         }else{
-            fout = new FileOutputStream(dir + nameFile);
+            fout = new FileOutputStream(dir + nameFile,true);
             if (data.length==4 && data[0]==47){
                 System.out.println("Конец передачи");
 //                ctx.writeAndFlush("file ok".getBytes());
@@ -37,7 +37,7 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
                 System.out.println(Arrays.toString(data));
 //                System.out.println(new String(data));
                 fout.write(data);
-            fout.close();
+
             }
 //            ctx.writeAndFlush("block received".getBytes());
         }

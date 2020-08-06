@@ -12,7 +12,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
         byte[] data= new byte[buf.readableBytes()];
         buf.readBytes(data);
         buf.clear();
-        System.out.println("Обработали входящий запрос");
+//        System.out.println("Обработали входящий запрос");
         ctx.fireChannelRead(data);
     }
 

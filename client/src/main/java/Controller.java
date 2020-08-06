@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -52,7 +53,7 @@ public class Controller implements Initializable {
         String command = txt.getText();
         String [] op = command.split(" ");
         ByteBuffer byteBuf = ByteBuffer.allocate(1024) ;
-
+            long time;
         byte [] buffer = new  byte[1024];
 //        System.out.println("start buffer "+ buffer);
         if (op[0].equals("/put")) {
@@ -72,15 +73,18 @@ public class Controller implements Initializable {
                     }
                     System.out.println(file.toString());
                     try(FileInputStream fin = new FileInputStream(file)) {
-                        while (fin.available()>0) {
+                        time=System.currentTimeMillis();
+                        while (true) {
                             if(fin.read()==-1){
+                                System.out.println("END");
                                 os.write("/fin".getBytes());
-                                fin.close();
                                 break;
                             }
                             int count=fin.read(buffer);
+                            System.out.println(Arrays.toString(buffer));
                             os.write(buffer, 0,count);
                             }
+                        System.out.println(System.currentTimeMillis()-time);
                         System.out.println("File OUT");
                     }
 
