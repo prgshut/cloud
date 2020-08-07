@@ -20,7 +20,7 @@ public class ServerApp {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline().addLast(
-                                new OutByteBufHandel(), new ReadCommand(), new PutHandel(), new GetHandel()
+                                new OutByteBufHandel(), new ReadCommand(), new PutHandel()
                         );
                     }
 

@@ -34,7 +34,7 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
                 System.out.println("Конец передачи");
 //                ctx.writeAndFlush("file ok".getBytes());
             }else {
-                System.out.println(Arrays.toString(data));
+//                System.out.println(Arrays.toString(data));
 //                System.out.println(new String(data));
                 fout.write(data);
 
@@ -56,7 +56,8 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
             }
             ctx.writeAndFlush("wait_file".getBytes());
         } else if (dat[0].equals("/get")) {
-            ctx.fireChannelRead(data);
+
+
         } else {
             ctx.writeAndFlush("ERR command\n");
         }
