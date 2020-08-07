@@ -23,10 +23,11 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        byte[] data = (byte[]) msg;
+        byte[] data = new byte[((byte[]) msg).length];
+                System.arraycopy (((byte[]) msg),0,data,0,((byte[]) msg).length);
         String[] dat = new String(data).split(" ");
 
-        if (dat.length>2) {
+        if (dat.length==3) {
             commDat(ctx, data, dat);
         }else{
             fout = new FileOutputStream(dir + nameFile,true);
@@ -34,7 +35,7 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
                 System.out.println("Конец передачи");
 //                ctx.writeAndFlush("file ok".getBytes());
             }else {
-//                System.out.println(Arrays.toString(data));
+                System.out.println( "write to file: "+ Arrays.toString(data));
 //                System.out.println(new String(data));
                 fout.write(data);
 
