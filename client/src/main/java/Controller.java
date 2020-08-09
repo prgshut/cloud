@@ -75,18 +75,20 @@ public class Controller implements Initializable {
                     try(FileInputStream fin = new FileInputStream(file)) {
                         time=System.currentTimeMillis();
                         while (true) {
-                            if(fin.read()==-1){
+
+                            int count=fin.read(buffer);
+                            if(count==-1){
                                 System.out.println("END");
-                                os.write("/fin".getBytes());
                                 break;
                             }
-                            int count=fin.read(buffer);
-                            System.out.println(Arrays.toString(buffer));
+//                            System.out.println(Arrays.toString(buffer));
                             os.write(buffer, 0,count);
                             }
                         System.out.println(System.currentTimeMillis()-time);
                         System.out.println("File OUT");
+
                     }
+                    os.write("/fin".getBytes());
 
                     lv.getItems().add(op[1]);
                 }

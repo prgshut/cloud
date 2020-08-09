@@ -14,7 +14,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
         ByteBuf buf = Unpooled.copiedBuffer((ByteBuf) msg);
         byte[] data= new byte[buf.readableBytes()];
         buf.readBytes(data);
-        System.out.println("read in byte: "+ Arrays.toString(data));
+//        System.out.println("read in byte: "+ Arrays.toString(data));
         buf.clear();
 //        System.out.println("Обработали входящий запрос");
         ctx.fireChannelRead(data);
