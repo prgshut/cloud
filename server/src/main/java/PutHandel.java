@@ -29,8 +29,11 @@ public class PutHandel extends ChannelInboundHandlerAdapter {
             commDat(ctx, data, dat);
         }else{
             fout = new FileOutputStream(dir + nameFile,true);
-            if (data.length==4 && data[0]==47){
+            if (data.length==4 && data[0]==47 && new File(dir + nameFile).length()==size){
                 System.out.println("Конец передачи");
+                size=0;
+                nameFile= null;
+                fout.close();
 //                ctx.writeAndFlush("file ok".getBytes());
             }else {
 //                System.out.println( "write to file: "+ Arrays.toString(data));
