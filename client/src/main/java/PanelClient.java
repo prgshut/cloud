@@ -1,8 +1,11 @@
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,6 +66,20 @@ public class PanelClient implements Initializable {
         }
         cbDiskClient.getSelectionModel().select(0);
 
+        tvClient.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                       @Override
+                                       public void handle(MouseEvent event) {
+                    if (event.getClickCount()==2){
+                        Path path = Paths.get(textClient.getText()).resolve(tvClient.getSelectionModel().getSelectedItem().getNameFile());
+                        if (Files.isDirectory(path)){
+                            updateList(path);
+                        }
+                    }
+                                       }
+                                   }
+
+        );
+
         updateList(Paths.get("."));
     }
     public void updateList(Path path) {
@@ -77,4 +94,24 @@ public class PanelClient implements Initializable {
         }
     }
 
+    public void upClient(ActionEvent actionEvent) {
+        Path upPath = Paths.get(textClient.getText()).getParent();
+        if(upPath!=null){
+            updateList(upPath);
+        }
+    }
+
+    public void selecDisk(ActionEvent actionEvent) {
+        ComboBox<String> selct = (ComboBox) actionEvent.getSource();
+        updateList(Paths.get(selct.getSelectionModel().getSelectedItem()));
+    }
+    public String getSelectionFileName(){
+        if(!tvClient.isFocused()){
+            return null;
+        }
+        return tvClient.getSelectionModel().getSelectedItem().getNameFile();
+    }
+    public String getSelectionPath(){
+        return textClient.getText();
+    }
 }

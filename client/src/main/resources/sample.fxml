@@ -34,10 +34,10 @@
 
                 <HBox prefHeight="44.0" spacing="5" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button mnemonicParsing="false" text="Переместить" />
-                        <Button mnemonicParsing="false" text="Копировать" />
-                        <Button mnemonicParsing="false" text="Удалисть" />
-                        <Button mnemonicParsing="false" onAction="#btnExit" text="Выход" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Копировать" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Удалисть" />
+                        <Button mnemonicParsing="false" focusTraversable="false" onAction="#btnExit" text="Выход" />
                     </children>
                 </HBox>
             </children>

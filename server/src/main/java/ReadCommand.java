@@ -7,8 +7,10 @@ import java.nio.file.Paths;
 
 
 public class ReadCommand extends ChannelInboundHandlerAdapter {
+    private static final byte COMMAND_GET_FILE_LIST = 10;
     private static final byte COMMAND_SEND_FILE = 20;
     private static final byte COMMAND_RECIPIENT_FILE = 30;
+
 
 
     @Override
@@ -23,6 +25,8 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
                ProtoFileSender.sendFile(path, ctx.channel(), (future)->{
 
                });
+           }else if(reader==COMMAND_GET_FILE_LIST){
+               CommandGetFileList.getFileList(path, ctx.channel());
            }
        }
 //        System.out.println("read in byte: "+ Arrays.toString(data));

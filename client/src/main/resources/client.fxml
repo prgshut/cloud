@@ -17,9 +17,9 @@
 
                   <HBox >
                      <children>
-                        <ComboBox fx:id="cbDiskClient" />
+                        <ComboBox fx:id="cbDiskClient" onAction="#selecDisk"/>
                         <TextField fx:id="textClient"  HBox.hgrow="ALWAYS" />
-                        <Button fx:id="upClient" mnemonicParsing="false" text="Button" />
+                        <Button onAction="#upClient" mnemonicParsing="false" text="Button" />
                      </children>
                   </HBox>
 
