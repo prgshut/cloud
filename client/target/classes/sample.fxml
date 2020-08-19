@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+    <children>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Connect" onAction="#ConnectServer" />
+                                <MenuItem mnemonicParsing="false" text="Close" onAction="#btnExit"/>
+
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+
+                <HBox VBox.vgrow="ALWAYS">
+                    <fx:include source="client.fxml" HBox.hgrow="ALWAYS" />
+                    <fx:include source="srver.fxml" HBox.hgrow="ALWAYS" />
+                </HBox>
+
+                <HBox prefHeight="44.0" spacing="5" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Копировать" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Удалисть" />
+                        <Button mnemonicParsing="false" focusTraversable="false" onAction="#btnExit" text="Выход" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
