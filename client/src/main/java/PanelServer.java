@@ -19,12 +19,12 @@ public class PanelServer implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-    public String getSelectionFileName(){
-        if(!tvServer.isFocused()){
-            return null;
-        }
-        return tvServer.getSelectionModel().getSelectedItem().getNameFile();
-    }
+//    public String getSelectionFileName(){
+//        if(!tvServer.isFocused()){
+//            return null;
+//        }
+//        return tvServer.getSelectionModel().getSelectedItem().getNameFile();
+//    }
     public String getSelectionPath(){
         return textServer.getText();
     }
