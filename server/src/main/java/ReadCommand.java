@@ -28,6 +28,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
         while (buf.readableBytes() > 0) {
             byte reader = buf.readByte();
             if (reader==COMMAND_AUTH){
+                System.out.println("аутинфикация");
               nameUser=CommandAuth.auth(ctx.channel(),buf,conect);
 
             }

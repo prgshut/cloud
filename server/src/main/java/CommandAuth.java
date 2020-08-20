@@ -32,7 +32,7 @@ public class CommandAuth {
             msg.readBytes(pas);
             password= new String(pas);
         }
-        final String str =String.format("SELECT user.name FROM test_base.user where user.login='%s' and user.pass='%s';", login, password);
+        final String str =String.format("SELECT user.name FROM cloud.user where user.login='%s' and user.pass='%s';", login, password);
         res=con.select(str);
         try {
             ByteBuf buf =  ByteBufAllocator.DEFAULT.directBuffer(1);
@@ -40,6 +40,7 @@ public class CommandAuth {
                 buf.writeByte((byte)1);
                 channel.writeAndFlush(buf);
                 return res.getString("UserName");
+
             }
         } catch (SQLException e) {
             e.printStackTrace();

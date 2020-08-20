@@ -37,6 +37,7 @@ public class Network {
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline().addLast();
                     currentChannel = socketChannel;
+
                 }
             });
             ChannelFuture channelFuture = clientBootstrap.connect().sync();
