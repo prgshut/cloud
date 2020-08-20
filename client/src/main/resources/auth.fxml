@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="100" prefWidth="200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AuthControl">
+    <children>
+        <HBox VBox.vgrow="ALWAYS">
+            <Label prefWidth="50" text="Login" />
+            <TextField fx:id="loginField" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox VBox.vgrow="ALWAYS">
+            <Label prefWidth="50" text="Pass" />
+            <PasswordField fx:id="passField" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox VBox.vgrow="ALWAYS">
+            <children>
+                <Button mnemonicParsing="false" onAction="#sendLoginPass" text="OK">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin></Button>
+                <Button mnemonicParsing="false" onAction="#exitLoginPass" text="Cancel">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin></Button>
+            </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+        </HBox>
+    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

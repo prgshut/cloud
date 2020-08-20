@@ -11,5 +11,13 @@
 
     <artifactId>client</artifactId>
 
+<dependencies>
+    <dependency>
+        <groupId>ru.geekbrains.cloud</groupId>
+        <artifactId>common</artifactId>
+        <version>1</version>
+        <scope>compile</scope>
+    </dependency>
+</dependencies>
 
 </project>
