@@ -16,20 +16,26 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
     private ConnectBase conect;
 
     public ReadCommand(ConnectBase connect) {
+
         this.conect = connect;
     }
 
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("3");
         ByteBuf buf = (ByteBuf) msg;
         String nameUser=null;
         Path path;
-        while (buf.readableBytes() > 0) {
+//        while (true) {
             byte reader = buf.readByte();
             if (reader==COMMAND_AUTH){
                 System.out.println("аутинфикация");
-              nameUser=CommandAuth.auth(ctx.channel(),buf,conect);
+              nameUser=CommandAuth.auth(ctx,buf,conect);
+              if (nameUser==null){
+                  System.out.println("Нет такого пользователя");
+
+              }
 
             }
             if (nameUser!=null) {
@@ -43,7 +49,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
                     CommandGetFileList.getFileList(path, ctx.channel());
                 }
             }
-        }
+//        }
 //        System.out.println("read in byte: "+ Arrays.toString(data));
 //        System.out.println("Обработали входящий запрос");
 //        ctx.fireChannelRead(data);

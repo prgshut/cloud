@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
-    private ClientController controller;
+
     private Parent root;
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -1,12 +1,25 @@
+import command.AuthCommand;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.channel.ChannelHandlerContext;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.channels.SocketChannel;
 
 public class AuthControl {
     @FXML
@@ -14,39 +27,44 @@ public class AuthControl {
     @FXML
     PasswordField passField;
 
-    private ClientController controller;
+    private Stage primaryStage;
 
-
-    public void sendLoginPass(ActionEvent actionEvent) {
+    public void sendLoginPass(ActionEvent actionEvent) throws IOException {
         String login=loginField.getText();
         String pass=passField.getText();
-        ByteBuf buf;
-        buf= ByteBufAllocator.DEFAULT.directBuffer(1);
-        buf.writeByte((byte)5);
-        Network.getInstance().getCurrentChannel().writeAndFlush(buf);
+        System.out.println("Отправка");
+        AuthCommand.sendAuth(login,pass,()->{
+            FXMLLoader loaderAuth = new FXMLLoader();
+            Parent  rootChat = loaderAuth.load(getClass().getResourceAsStream("sample.fxml"));
+            AuthControl authDialog = loaderAuth.getController();
+//            authDialog.setController(this);
+            Scene scene = new Scene(rootChat, 500, 230);
+            primaryStage.setTitle("Авторизация");
+            primaryStage.setScene(scene);
+            primaryStage.setIconified(false);
+            primaryStage.show();
+            primaryStage.setOnCloseRequest(e -> {
+                System.exit(0);
+            });
 
-        buf=ByteBufAllocator.DEFAULT.directBuffer(4);
-        buf.writeInt(login.length());
-        Network.getInstance().getCurrentChannel().writeAndFlush(buf);
-        buf=ByteBufAllocator.DEFAULT.directBuffer(login.length());
-        buf.writeBytes(login.getBytes());
-        Network.getInstance().getCurrentChannel().writeAndFlush(buf);
+        },()->{
+            System.out.println("Нет пользователя");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"Info");
+            alert.getDialogPane().setContentText("Неверное имя");
+        });
 
-        buf=ByteBufAllocator.DEFAULT.directBuffer(1);
-        buf.writeInt(pass.length());
-        Network.getInstance().getCurrentChannel().writeAndFlush(buf);
-        buf=ByteBufAllocator.DEFAULT.directBuffer(pass.length());
-        buf.writeBytes(pass.getBytes());
-        Network.getInstance().getCurrentChannel().writeAndFlush(buf);
 
 
 
     }
 
     public void exitLoginPass(ActionEvent actionEvent) {
-        Platform.exit();
+        System.exit(0);
     }
-    public void setController(ClientController controller) {
-        this.controller = controller;
+
+
+    public void setController(Stage primaryStage) {
+    this.primaryStage=primaryStage;
+
     }
 }

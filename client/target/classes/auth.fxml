@@ -8,12 +8,12 @@
     <children>
         <HBox VBox.vgrow="ALWAYS">
             <Label prefWidth="50" text="Login" />
-            <TextField fx:id="loginFild" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="loginField" HBox.hgrow="ALWAYS" />
         </HBox>
 
         <HBox VBox.vgrow="ALWAYS">
             <Label prefWidth="50" text="Pass" />
-            <PasswordField fx:id="passFilde" HBox.hgrow="ALWAYS" />
+            <PasswordField fx:id="passField" HBox.hgrow="ALWAYS" />
         </HBox>
 
         <HBox VBox.vgrow="ALWAYS">
