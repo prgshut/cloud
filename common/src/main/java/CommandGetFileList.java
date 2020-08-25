@@ -11,8 +11,10 @@ import java.util.stream.Stream;
 public class CommandGetFileList {
     private final static byte DIR = 11;
     private final static byte FILE =12;
+    private final static byte END_LIST =13;
 
     public static void getFileList(Path path, Channel channel){
+        ByteBuf bufEnd=null;
         try (Stream<Path> streamPath= Files.walk(path)){
             streamPath.forEach(file->{
                 ByteBuf buf = null;
@@ -41,8 +43,12 @@ public class CommandGetFileList {
                 }
                 channel.writeAndFlush(buf);
             });
+            bufEnd=ByteBufAllocator.DEFAULT.directBuffer(1);
+            bufEnd.writeByte(END_LIST);
+            channel.writeAndFlush(bufEnd);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

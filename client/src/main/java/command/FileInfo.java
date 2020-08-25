@@ -1,3 +1,5 @@
+package command;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +46,10 @@ public class FileInfo {
     public void setType(FileType type) {
         this.type = type;
     }
+
+    public FileInfo() {
+    }
+
     public FileInfo(Path path) {
         try {
             this.nameFile = path.getFileName().toString();

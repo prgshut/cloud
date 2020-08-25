@@ -11,13 +11,14 @@ import java.util.concurrent.CountDownLatch;
 public class Main extends Application {
     private static final String DEFAULT_ADDR ="localhost";
     private static final int DEFAULT_PORT = 8189;
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loaderAuth = new FXMLLoader();
-         Parent rootChat = loaderAuth.load(getClass().getResourceAsStream("auth.fxml"));
+         Parent rootAuth = loaderAuth.load(getClass().getResourceAsStream("auth.fxml"));
         AuthControl authDialog = loaderAuth.getController();
         authDialog.setController(primaryStage);
-        Scene scene = new Scene(rootChat, 500, 230);
+        Scene scene = new Scene(rootAuth, 500, 230);
         primaryStage.setTitle("Авторизация");
         primaryStage.setScene(scene);
         primaryStage.setIconified(false);

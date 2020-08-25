@@ -24,13 +24,6 @@ public class AuthCommand {
                 buf.put(pass.getBytes());
                 buf.flip();
                 Network.getInstance().getCurrentChannel().write(buf);
-//                out.writeByte(5);
-//                out.writeInt(login.length());
-//                out.writeBytes(login);
-//                System.out.println(login);
-//                out.writeInt(pass.length());
-//                out.writeBytes(pass);
-//                System.out.println(pass);
                 System.out.println("читаем ответ");
                 byte rez= Network.getInstance().getIn().readByte();
                 System.out.println("Входящин данные "+rez);
@@ -44,14 +37,17 @@ public class AuthCommand {
                         }
                     });
                 }else {
-                    Platform.runLater(()->{
-                        try {
+
                             System.out.println("4");
-                            callbackErr.call();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                            Platform.runLater(()-> {
+                                try {
+                                    callbackErr.call();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+
                 }
 
             } catch (IOException e) {

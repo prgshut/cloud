@@ -10,22 +10,24 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
 
 
-    private Parent root;
+    private static String LOGIN_CLIENT;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        try {
-//            socket = new Socket("localhost", 8189);
-//            is = new DataInputStream(socket.getInputStream());
-//            os = new DataOutputStream(socket.getOutputStream());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+updateList(Paths.get(LOGIN_CLIENT));
+
+    }
+
+    private void updateList(Path path) {
+
+
     }
 
 
@@ -33,23 +35,7 @@ public class Controller implements Initializable {
         Platform.exit();
     }
 
-//    public void ConnectServer(ActionEvent actionEvent) {
-//        Stage renameStage = new Stage();
-//        FXMLLoader loaderRename = new FXMLLoader();
-//
-//        try {
-//            root = loaderRename.load(getClass().getResourceAsStream("../rename/RenameForm.fxml"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        RenameControl renameModel = loaderRename.getController();
-//        renameModel.setController(this.controller);
-//        Scene scene = new Scene(root, 300, 200);
-//        renameStage.setTitle("Переименовка");
-//        renameStage.setScene(scene);
-//        renameStage.initModality(Modality.WINDOW_MODAL);
-//        renameStage.initOwner(((Node)event.getSource()).getScene().getWindow());
-//        renameStage.setIconified(false);
-//        renameStage.show();
-//    }
+    public void setController(String login){
+        LOGIN_CLIENT=login;
+    }
 }
