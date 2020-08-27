@@ -1,4 +1,5 @@
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -13,7 +14,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
     private static final byte COMMAND_RECIPIENT_FILE = 30;
     private static final byte COMMAND_AUTH = 5;
     private static final byte COMMAND_GET_HOME_DIR = 40;
-
+    private static  String nameUser;
     private ConnectBase conect;
     private Path pathClient;
     private Path defalPath =Paths.get("serverClient");
@@ -26,16 +27,18 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("3");
+        System.out.println("31");
         int temp = 0;
         ByteBuf buf = (ByteBuf) msg;
-        String nameUser = null;
+
         Path path;
 //        while (true) {
         byte reader = buf.readByte();
+
         if (reader == COMMAND_AUTH) {
             System.out.println("аутинфикация");
             nameUser = CommandAuth.auth(ctx, buf, conect);
+
             if (nameUser == null) {
                 System.out.println("Нет такого пользователя");
 
@@ -56,8 +59,18 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
                 ProtoFileSender.sendFile(path, ctx.channel(), (future) -> {
                 });
             } else if (reader == COMMAND_GET_FILE_LIST) {
+                System.out.println(reader);
                 path= defalPath.resolve(OtheCommand.getPath(buf));
+                System.out.println(path.toString());
                 CommandGetFileList.getFileList(path, ctx.channel());
+            }else if(reader==COMMAND_GET_HOME_DIR){
+
+                ByteBuf bufTemp = ByteBufAllocator.DEFAULT.directBuffer(4);
+                bufTemp.writeInt(nameUser.length());
+                ctx.writeAndFlush(bufTemp);
+                bufTemp=ByteBufAllocator.DEFAULT.directBuffer(nameUser.length());
+                bufTemp.writeBytes(nameUser.getBytes());
+                ctx.writeAndFlush(bufTemp);
             }
         }
 //        }

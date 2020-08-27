@@ -15,8 +15,10 @@ public class CommandGetFileList {
 
     public static void getFileList(Path path, Channel channel){
         ByteBuf bufEnd=null;
+        System.out.println("Зашли в отправку списка");
         try (Stream<Path> streamPath= Files.walk(path)){
             streamPath.forEach(file->{
+                System.out.println("Out list file");
                 ByteBuf buf = null;
                 if (Files.isDirectory(file)){
                     buf=ByteBufAllocator.DEFAULT.directBuffer(1);

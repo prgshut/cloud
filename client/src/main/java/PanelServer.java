@@ -29,7 +29,9 @@ public class PanelServer implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Создание серверной части");
         homeDir= OtheCommand.getHomeDir();
+        System.out.println(homeDir);
         TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
         fileTypeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getType().getName()));
         fileTypeColumn.setPrefWidth(24);
@@ -81,6 +83,7 @@ public class PanelServer implements Initializable {
 
     }
     public void updateList(Path path) {
+        System.out.println(path.toString());
         try {
             List<FileInfo> listFil= FileListServer.getListFileServer(path.toString());
             textServer.setText(path.normalize().toAbsolutePath().toString());

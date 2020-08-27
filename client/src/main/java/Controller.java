@@ -21,7 +21,7 @@ public class Controller implements Initializable {
     private static String LOGIN_CLIENT;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-updateList(Paths.get(LOGIN_CLIENT));
+//updateList(Paths.get(LOGIN_CLIENT));
 
     }
 

@@ -41,6 +41,7 @@ public class AuthControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent rootTotal = loader.load();
         Controller dialogTotal = loader.getController();
+        System.out.println(login);
         dialogTotal.setController(login);
         Scene sceneTotal = new Scene(rootTotal, 800, 600);
         totalStage.setTitle("Авторизация");

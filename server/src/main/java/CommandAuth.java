@@ -33,19 +33,17 @@ public class CommandAuth {
             msg.readBytes(pas);
             password= new String(pas);
         }
-        System.out.println(login +" "+password);
+
         final String str =String.format("SELECT UserName FROM name  where UserName='%s' and Password='%s';", login, password);
         res=con.select(str);
         try {
             ByteBuf buf =  ByteBufAllocator.DEFAULT.directBuffer(1);
             while (res.next()){
-                System.out.println("Отправляем ответ удачно");
-                buf.writeByte((byte)1);
+                              buf.writeByte((byte)1);
                 channel.writeAndFlush(buf);
                 return res.getString("UserName");
-
             }
-            System.out.println("отправляем не удачно");
+
         buf.writeByte((byte)2);
         channel.writeAndFlush(buf);
         } catch (SQLException e) {
