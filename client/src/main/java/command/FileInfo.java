@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public class FileInfo {
+
     public enum FileType{
         FILE("F"),DIRECTORY("D");
         private String name;

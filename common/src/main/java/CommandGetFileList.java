@@ -17,40 +17,52 @@ public class CommandGetFileList {
         ByteBuf bufEnd=null;
         System.out.println("Зашли в отправку списка");
         try (Stream<Path> streamPath= Files.walk(path)){
-            streamPath.forEach(file->{
-                System.out.println("Out list file");
+            System.out.println("Out list file");
+            streamPath.map(Path::toFile)
+                    .forEach(file->{
                 ByteBuf buf = null;
-                if (Files.isDirectory(file)){
+                if (file.isDirectory()){
                     buf=ByteBufAllocator.DEFAULT.directBuffer(1);
                     buf.writeByte(DIR);
+                    channel.writeAndFlush(buf);
+
+                    System.out.println("DIR");
                 }else {
                     buf=ByteBufAllocator.DEFAULT.directBuffer(1);
                     buf.writeByte(FILE);
-                }
+                    channel.writeAndFlush(buf);
 
-                byte[] filenameBytes = file.getFileName().toString().getBytes(StandardCharsets.UTF_8);
+                    System.out.println("FILE");
+                }
+                buf.clear();
+
+                byte[] filenameBytes = file.toString().getBytes(StandardCharsets.UTF_8);
                 buf = ByteBufAllocator.DEFAULT.directBuffer(4);
                 buf.writeInt(filenameBytes.length);
+                        System.out.println(buf.isWritable());
                 channel.writeAndFlush(buf);
+                System.out.println(new String(filenameBytes));
+                        buf.clear();
 
                 buf = ByteBufAllocator.DEFAULT.directBuffer(filenameBytes.length);
                 buf.writeBytes(filenameBytes);
                 channel.writeAndFlush(buf);
+                        buf.clear();
 
                 buf = ByteBufAllocator.DEFAULT.directBuffer(8);
-                try {
-                    buf.writeLong(Files.size(file));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                channel.writeAndFlush(buf);
-            });
-            bufEnd=ByteBufAllocator.DEFAULT.directBuffer(1);
-            bufEnd.writeByte(END_LIST);
-            channel.writeAndFlush(bufEnd);
+                        buf.writeLong(file.length());
+                        channel.writeAndFlush(buf);
+                        buf.clear();
+
+                    });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        bufEnd=ByteBufAllocator.DEFAULT.directBuffer(1);
+        bufEnd.writeByte(END_LIST);
+        System.out.println("END_LIST");
+        channel.writeAndFlush(bufEnd);
 
     }
 }

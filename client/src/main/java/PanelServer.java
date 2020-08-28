@@ -3,6 +3,7 @@ import command.FileListServer;
 import command.OtheCommand;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PanelServer implements Initializable {
     @FXML
@@ -31,7 +33,6 @@ public class PanelServer implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Создание серверной части");
         homeDir= OtheCommand.getHomeDir();
-        System.out.println(homeDir);
         TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
         fileTypeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getType().getName()));
         fileTypeColumn.setPrefWidth(24);
@@ -84,16 +85,15 @@ public class PanelServer implements Initializable {
     }
     public void updateList(Path path) {
         System.out.println(path.toString());
-        try {
-            List<FileInfo> listFil= FileListServer.getListFileServer(path.toString());
-            textServer.setText(path.normalize().toAbsolutePath().toString());
-            tvServer.getItems().clear();
-            tvServer.getItems().addAll(Files.list(path).map(FileInfo::new).collect(Collectors.toList()));
-            tvServer.sort();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "По какой-то причине не удалось обновить список файлов", ButtonType.OK);
-            alert.showAndWait();
+        List<FileInfo> listFil= FileListServer.getListFileServer(path.toString());
+        textServer.setText(path.normalize().toString());
+        tvServer.getItems().clear();
+        for (FileInfo fileInfo : listFil) {
+            System.out.println(fileInfo.getNameFile());
+            System.out.println(fileInfo.getType());
         }
+        tvServer.getItems().addAll(listFil.stream().collect(Collectors.toList()));
+        tvServer.sort();
     }
 //    public String getSelectionFileName(){
 //        if(!tvServer.isFocused()){
@@ -103,5 +103,9 @@ public class PanelServer implements Initializable {
 //    }
     public String getSelectionPath(){
         return textServer.getText();
+    }
+
+    public void update(ActionEvent actionEvent) {
+        updateList(Paths.get(textServer.getText()));
     }
 }

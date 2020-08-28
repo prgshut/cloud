@@ -17,6 +17,7 @@
                   <HBox >
                      <children>
                         <ComboBox fx:id="cbDiskServer" />
+                         <Button fx:id="update" onAction="#update" text="update"/>
                         <TextField fx:id="textServer"  HBox.hgrow="ALWAYS" />
                         <Button fx:id="upServer" mnemonicParsing="false" text="Button" />
                      </children>
