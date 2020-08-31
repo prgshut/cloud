@@ -16,9 +16,10 @@ public class CommandGetFileList {
     public static void getFileList(Path path, Channel channel){
         ByteBuf bufEnd=null;
         System.out.println("Зашли в отправку списка");
-        try (Stream<Path> streamPath= Files.walk(path)){
+//        try (Stream<Path> streamPath= Files.walk(path)){
             System.out.println("Out list file");
-            streamPath.map(Path::toFile)
+        try {
+            Files.list(path).map(Path::toFile)
                     .forEach(file->{
                 ByteBuf buf = null;
                 if (file.isDirectory()){
@@ -36,7 +37,7 @@ public class CommandGetFileList {
                 }
                 buf.clear();
 
-                byte[] filenameBytes = file.toString().getBytes(StandardCharsets.UTF_8);
+                byte[] filenameBytes = file.getName().toString().getBytes(StandardCharsets.UTF_8);
                 buf = ByteBufAllocator.DEFAULT.directBuffer(4);
                 buf.writeInt(filenameBytes.length);
                         System.out.println(buf.isWritable());
@@ -55,10 +56,13 @@ public class CommandGetFileList {
                         buf.clear();
 
                     });
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         bufEnd=ByteBufAllocator.DEFAULT.directBuffer(1);
         bufEnd.writeByte(END_LIST);
         System.out.println("END_LIST");

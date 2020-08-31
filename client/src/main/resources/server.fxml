@@ -19,10 +19,12 @@
                         <ComboBox fx:id="cbDiskServer" />
                          <Button fx:id="update" onAction="#update" text="update"/>
                         <TextField fx:id="textServer"  HBox.hgrow="ALWAYS" />
-                        <Button fx:id="upServer" mnemonicParsing="false" text="Button" />
+                        <Button fx:id="upServer"  onAction="#upServer" mnemonicParsing="false" text="up" />
                      </children>
                   </HBox>
                   <TableView fx:id="tvServer"  VBox.vgrow="ALWAYS"/>
-
    </children>
+    <properties>
+        <ctrl><fx:reference source="controller"/></ctrl>
+    </properties>
 </VBox>

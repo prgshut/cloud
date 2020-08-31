@@ -31,7 +31,6 @@ public class PanelServer implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Создание серверной части");
         homeDir= OtheCommand.getHomeDir();
         TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
         fileTypeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getType().getName()));
@@ -71,7 +70,7 @@ public class PanelServer implements Initializable {
                                        public void handle(MouseEvent event) {
                                            if (event.getClickCount() == 2) {
                                                Path path = Paths.get(textServer.getText()).resolve(tvServer.getSelectionModel().getSelectedItem().getNameFile());
-                                               if (Files.isDirectory(path)) {
+                                               if (tvServer.getSelectionModel().getSelectedItem().getType()==FileInfo.FileType.DIRECTORY) {
                                                    updateList(path);
                                                }
                                            }
@@ -84,28 +83,30 @@ public class PanelServer implements Initializable {
 
     }
     public void updateList(Path path) {
-        System.out.println(path.toString());
         List<FileInfo> listFil= FileListServer.getListFileServer(path.toString());
         textServer.setText(path.normalize().toString());
         tvServer.getItems().clear();
-        for (FileInfo fileInfo : listFil) {
-            System.out.println(fileInfo.getNameFile());
-            System.out.println(fileInfo.getType());
-        }
-        tvServer.getItems().addAll(listFil.stream().collect(Collectors.toList()));
+        tvServer.getItems().addAll(listFil);
         tvServer.sort();
-    }
-//    public String getSelectionFileName(){
-//        if(!tvServer.isFocused()){
-//            return null;
-//        }
-//        return tvServer.getSelectionModel().getSelectedItem().getNameFile();
-//    }
-    public String getSelectionPath(){
-        return textServer.getText();
     }
 
     public void update(ActionEvent actionEvent) {
         updateList(Paths.get(textServer.getText()));
+    }
+
+    public void upServer(ActionEvent actionEvent) {
+        Path upPath = Paths.get(textServer.getText()).getParent();
+        if (upPath != null) {
+            updateList(upPath);
+        }
+    }
+    public String getSelectionFileName() {
+        if (!tvServer.isFocused()) {
+            return null;
+        }
+        return tvServer.getSelectionModel().getSelectedItem().getNameFile();
+    }
+    public String getSelectionPath() {
+        return textServer.getText();
     }
 }

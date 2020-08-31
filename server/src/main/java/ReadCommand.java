@@ -32,7 +32,6 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
         ByteBuf buf = (ByteBuf) msg;
 
         Path path;
-//        while (true) {
         byte reader = buf.readByte();
 
         if (reader == COMMAND_AUTH) {
@@ -59,8 +58,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
                 ProtoFileSender.sendFile(path, ctx.channel(), (future) -> {
                 });
             } else if (reader == COMMAND_GET_FILE_LIST) {
-                System.out.println(reader);
-                path= defalPath.resolve(OtheCommand.getPath(buf));
+                           path= defalPath.resolve(OtheCommand.getPath(buf));
                 System.out.println(path.toString());
                 CommandGetFileList.getFileList(path, ctx.channel());
             }else if(reader==COMMAND_GET_HOME_DIR){
@@ -73,10 +71,7 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush(bufTemp);
             }
         }
-//        }
-//        System.out.println("read in byte: "+ Arrays.toString(data));
-//        System.out.println("Обработали входящий запрос");
-//        ctx.fireChannelRead(data);
+
     }
 
     @Override

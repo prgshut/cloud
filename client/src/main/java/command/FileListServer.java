@@ -15,7 +15,6 @@ public class FileListServer {
 
     public static List<FileInfo> getListFileServer(String path) {
         fileInfoList.clear();
-        new Thread(() -> {
             try {
                 ByteBuffer buf = ByteBuffer.allocateDirect(1 + 4 + path.length());
                 buf.put((byte) 10);
@@ -23,36 +22,32 @@ public class FileListServer {
                 buf.put(path.getBytes());
                 buf.flip();
                 Network.getInstance().getCurrentChannel().write(buf);
-                System.out.println("Запрос на список файлов");
                 while (true) {
-                    int temp = 0;
                     byte tmp;
                     FileInfo fileInfo = new FileInfo();
                     tmp = Network.getInstance().getIn().readByte();
-                    System.out.println(tmp);
                     if (tmp == DIR) {
                         fileInfo.setType(FileInfo.FileType.DIRECTORY);
                     } else if (tmp == FILE) {
-                        fileInfo.setType(FileInfo.FileType.DIRECTORY);
+                        fileInfo.setType(FileInfo.FileType.FILE);
                     } else if (tmp == END_FILE) {
                         break;
                     }
                     int sizeNameFile = Network.getInstance().getIn().readInt();
-                    System.out.println(sizeNameFile + " Size");
                     byte[] nameFile = new byte[sizeNameFile];
                     Network.getInstance().getIn().read(nameFile, 0, sizeNameFile);
-                    System.out.println(new String(nameFile) + " массив  имени файла");
                     fileInfo.setNameFile(new String(nameFile));
                     long size = Network.getInstance().getIn().readLong();
-                    fileInfo.setSize(size);
-                    System.out.println(size + " длина файла");
+                    if (fileInfo.getType()== FileInfo.FileType.DIRECTORY){
+                        fileInfo.setSize(-1l);
+                    }else {
+                        fileInfo.setSize(size);
+                    }
                     fileInfoList.add(fileInfo);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-        }).start();
         return fileInfoList;
     }
 }

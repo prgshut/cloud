@@ -7,7 +7,6 @@ public class OtheCommand {
         try {
             Network.getInstance().getOut().writeByte(40);
             Network.getInstance().getOut().flush();
-            System.out.println("Отправили команду на доступ к файлам");
             int lenPath=Network.getInstance().getIn().readInt();
             byte[] homeDir= new byte[lenPath];
             int temp=0;

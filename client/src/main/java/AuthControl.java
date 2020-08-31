@@ -24,13 +24,11 @@ public class AuthControl {
     public void sendLoginPass(ActionEvent actionEvent) throws IOException {
         String login = loginField.getText();
         String pass = passField.getText();
-        System.out.println("Отправка");
         AuthCommand.sendAuth(login, pass, () -> {
             openTotal(login);
             primaryStage.close();
 
         }, () -> {
-            System.out.println("Нет пользователя");
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Info", ButtonType.OK);
             alert.getDialogPane().setContentText("Неверное имя");
             alert.showAndWait();
@@ -41,13 +39,11 @@ public class AuthControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent rootTotal = loader.load();
         Controller dialogTotal = loader.getController();
-        System.out.println(login);
         dialogTotal.setController(login);
         Scene sceneTotal = new Scene(rootTotal, 800, 600);
         totalStage.setTitle("Авторизация");
         totalStage.setScene(sceneTotal);
         totalStage.setIconified(false);
-        totalStage.show();
         totalStage.show();
         totalStage.setOnCloseRequest(e -> {
             System.exit(0);

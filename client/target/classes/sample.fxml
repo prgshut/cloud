@@ -29,13 +29,13 @@
                 </MenuBar>
 
                 <HBox VBox.vgrow="ALWAYS">
-                    <fx:include source="client.fxml" HBox.hgrow="ALWAYS" />
-                    <fx:include source="srver.fxml" HBox.hgrow="ALWAYS" />
+                    <fx:include fx:id="client" source="client.fxml" HBox.hgrow="ALWAYS" />
+                    <fx:include fx:id="server" source="server.fxml" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox prefHeight="44.0" spacing="5" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" onAction="#cutFile" />
                         <Button mnemonicParsing="false" focusTraversable="false" text="Копировать" />
                         <Button mnemonicParsing="false" focusTraversable="false" text="Удалисть" />
                         <Button mnemonicParsing="false" focusTraversable="false" onAction="#btnExit" text="Выход" />

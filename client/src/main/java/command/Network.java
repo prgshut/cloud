@@ -39,8 +39,6 @@ public class Network {
             out = new DataOutputStream(currentChannel.socket().getOutputStream());
             in = new DataInputStream(currentChannel.socket().getInputStream());
             countDownLatch.countDown();
-        System.out.println("Подключение к серрверу");
-
 
     }
 

@@ -11,11 +11,8 @@ import java.nio.ByteBuffer;
 
 public class AuthCommand {
     public static void sendAuth(String login, String pass, Callback callback, Callback callbackErr) {
-        System.out.println("1");
         new Thread(() -> {
             try {
-                System.out.println("2");
-                System.out.println(Network.getInstance().getCurrentChannel().isConnected());
                 ByteBuffer buf = ByteBuffer.allocate(1 + 4 + login.length() + 4 + pass.length());
                 buf.put((byte) 5);
                 buf.putInt(login.length());
@@ -24,9 +21,7 @@ public class AuthCommand {
                 buf.put(pass.getBytes());
                 buf.flip();
                 Network.getInstance().getCurrentChannel().write(buf);
-                System.out.println("читаем ответ");
                 byte rez = Network.getInstance().getIn().readByte();
-                System.out.println("Входящин данные " + rez);
                 if (rez == (byte) 1) {
                     Platform.runLater(() -> {
                         try {
