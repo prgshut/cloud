@@ -1,4 +1,4 @@
-package command;
+package ru.cloud;
 
 import java.io.IOException;
 

@@ -1,23 +1,21 @@
-package command;
+package ru.cloud.command;
 
-import java.io.DataInputStream;
+import ru.cloud.Command;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FileListServer {
     private static List<FileInfo> fileInfoList = new LinkedList<>();
-    private static byte DIR = 11;
-    private static byte FILE = 12;
-    private static byte END_FILE = 13;
+
 
     public static List<FileInfo> getListFileServer(String path) {
         fileInfoList.clear();
             try {
                 ByteBuffer buf = ByteBuffer.allocateDirect(1 + 4 + path.length());
-                buf.put((byte) 10);
+                buf.put(Command.COMMAND_GET_FILE_LIST);
                 buf.putInt(path.length());
                 buf.put(path.getBytes());
                 buf.flip();
@@ -26,11 +24,11 @@ public class FileListServer {
                     byte tmp;
                     FileInfo fileInfo = new FileInfo();
                     tmp = Network.getInstance().getIn().readByte();
-                    if (tmp == DIR) {
+                    if (tmp == Command.DIR) {
                         fileInfo.setType(FileInfo.FileType.DIRECTORY);
-                    } else if (tmp == FILE) {
+                    } else if (tmp == Command.FILE) {
                         fileInfo.setType(FileInfo.FileType.FILE);
-                    } else if (tmp == END_FILE) {
+                    } else if (tmp == Command.END_LIST) {
                         break;
                     }
                     int sizeNameFile = Network.getInstance().getIn().readInt();

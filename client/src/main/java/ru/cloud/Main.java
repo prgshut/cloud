@@ -1,4 +1,6 @@
-import command.Network;
+package ru.cloud;
+
+import ru.cloud.command.Network;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loaderAuth = new FXMLLoader();
-         Parent rootAuth = loaderAuth.load(getClass().getResourceAsStream("auth.fxml"));
+         Parent rootAuth = loaderAuth.load(getClass().getResourceAsStream("/auth.fxml"));
         AuthControl authDialog = loaderAuth.getController();
         authDialog.setController(primaryStage);
         Scene scene = new Scene(rootAuth, 500, 230);

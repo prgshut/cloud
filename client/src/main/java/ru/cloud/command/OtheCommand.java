@@ -1,11 +1,13 @@
-package command;
+package ru.cloud.command;
+
+import ru.cloud.Command;
 
 import java.io.IOException;
 
 public class OtheCommand {
     public static String getHomeDir(){
         try {
-            Network.getInstance().getOut().writeByte(40);
+            Network.getInstance().getOut().writeByte(Command.COMMAND_GET_HOME_DIR);
             Network.getInstance().getOut().flush();
             int lenPath=Network.getInstance().getIn().readInt();
             byte[] homeDir= new byte[lenPath];

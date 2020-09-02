@@ -1,4 +1,4 @@
-package command;
+package ru.cloud.command;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

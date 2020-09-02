@@ -1,3 +1,5 @@
+package ru.cloud;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
@@ -6,13 +8,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 public class CommandGetFileList {
-    private final static byte DIR = 11;
-    private final static byte FILE =12;
-    private final static byte END_LIST =13;
-
     public static void getFileList(Path path, Channel channel){
         ByteBuf bufEnd=null;
         System.out.println("Зашли в отправку списка");
@@ -24,13 +21,13 @@ public class CommandGetFileList {
                 ByteBuf buf = null;
                 if (file.isDirectory()){
                     buf=ByteBufAllocator.DEFAULT.directBuffer(1);
-                    buf.writeByte(DIR);
+                    buf.writeByte(Command.DIR);
                     channel.writeAndFlush(buf);
 
                     System.out.println("DIR");
                 }else {
                     buf=ByteBufAllocator.DEFAULT.directBuffer(1);
-                    buf.writeByte(FILE);
+                    buf.writeByte(Command.FILE);
                     channel.writeAndFlush(buf);
 
                     System.out.println("FILE");
@@ -64,7 +61,7 @@ public class CommandGetFileList {
 //            e.printStackTrace();
 //        }
         bufEnd=ByteBufAllocator.DEFAULT.directBuffer(1);
-        bufEnd.writeByte(END_LIST);
+        bufEnd.writeByte(Command.END_LIST);
         System.out.println("END_LIST");
         channel.writeAndFlush(bufEnd);
 

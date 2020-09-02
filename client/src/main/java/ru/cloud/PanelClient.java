@@ -1,4 +1,6 @@
-import command.FileInfo;
+package ru.cloud;
+
+import ru.cloud.command.FileInfo;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;

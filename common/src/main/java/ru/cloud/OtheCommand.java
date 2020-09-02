@@ -1,3 +1,5 @@
+package ru.cloud;
+
 import io.netty.buffer.ByteBuf;
 
 public class OtheCommand {

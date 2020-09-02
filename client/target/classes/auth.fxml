@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="100" prefWidth="200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AuthControl">
+<VBox prefHeight="100" prefWidth="200" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.cloud.AuthControl">
     <children>
         <HBox VBox.vgrow="ALWAYS">
             <Label prefWidth="50" text="Login" />

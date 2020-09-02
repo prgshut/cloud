@@ -1,10 +1,10 @@
-package command;
+package ru.cloud.command;
 
 import javafx.application.Platform;
+import ru.cloud.Callback;
+import ru.cloud.Command;
 
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -14,7 +14,7 @@ public class AuthCommand {
         new Thread(() -> {
             try {
                 ByteBuffer buf = ByteBuffer.allocate(1 + 4 + login.length() + 4 + pass.length());
-                buf.put((byte) 5);
+                buf.put(Command.COMMAND_AUTH);
                 buf.putInt(login.length());
                 buf.put(login.getBytes());
                 buf.putInt(pass.length());

@@ -1,4 +1,6 @@
-import command.AuthCommand;
+package ru.cloud;
+
+import ru.cloud.command.AuthCommand;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +38,7 @@ public class AuthControl {
     }
 
     private void openTotal(String login) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         Parent rootTotal = loader.load();
         Controller dialogTotal = loader.getController();
         dialogTotal.setController(login);

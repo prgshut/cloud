@@ -1,22 +1,17 @@
+package ru.cloud;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import ru.cloud.command.FileSendToServer;
 
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
 
 public class Controller {
 @FXML
@@ -37,11 +32,23 @@ public class Controller {
 
     public void cutFile(ActionEvent actionEvent) {
 
-
         if (serverPC.getSelectionFileName()==null && clientPC.getSelectionFileName()==null){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Ни один файл не был выбран", ButtonType.OK);
             alert.showAndWait();
             return;
+        }
+        if (clientPC.getSelectionFileName()!=null){
+            System.out.println("Отправляем");
+            System.out.println(serverPC.getSelectionPath());
+            Path pathSrc = Paths.get(clientPC.getSelectionPath()).resolve(clientPC.getSelectionFileName());
+            Path pathDst = Paths.get(serverPC.getSelectionPath());
+                FileSendToServer.filSendServer(pathSrc,pathDst,()->{
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Файл передан", ButtonType.OK);
+                    alert.showAndWait();
+
+                    serverPC.updateList(pathDst);
+                });
+
         }
     }
 }
