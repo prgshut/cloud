@@ -1,3 +1,6 @@
+package ru.cloud;
+
+import ru.cloud.command.FileInfo;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -57,7 +60,7 @@ public class PanelClient implements Initializable {
         });
         fileSizeColumn.setPrefWidth(60);
 
-        tvClient.getColumns().addAll(fileTypeColumn,filenameColumn,fileSizeColumn);
+        tvClient.getColumns().addAll(fileTypeColumn, filenameColumn, fileSizeColumn);
         tvClient.getSortOrder().add(fileTypeColumn);
 
         cbDiskClient.getItems().clear();
@@ -69,12 +72,12 @@ public class PanelClient implements Initializable {
         tvClient.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                        @Override
                                        public void handle(MouseEvent event) {
-                    if (event.getClickCount()==2){
-                        Path path = Paths.get(textClient.getText()).resolve(tvClient.getSelectionModel().getSelectedItem().getNameFile());
-                        if (Files.isDirectory(path)){
-                            updateList(path);
-                        }
-                    }
+                                           if (event.getClickCount() == 2) {
+                                               Path path = Paths.get(textClient.getText()).resolve(tvClient.getSelectionModel().getSelectedItem().getNameFile());
+                                               if (Files.isDirectory(path)) {
+                                                   updateList(path);
+                                               }
+                                           }
                                        }
                                    }
 
@@ -82,6 +85,7 @@ public class PanelClient implements Initializable {
 
         updateList(Paths.get("."));
     }
+
     public void updateList(Path path) {
         try {
             textClient.setText(path.normalize().toAbsolutePath().toString());
@@ -96,7 +100,7 @@ public class PanelClient implements Initializable {
 
     public void upClient(ActionEvent actionEvent) {
         Path upPath = Paths.get(textClient.getText()).getParent();
-        if(upPath!=null){
+        if (upPath != null) {
             updateList(upPath);
         }
     }
@@ -105,13 +109,15 @@ public class PanelClient implements Initializable {
         ComboBox<String> selct = (ComboBox) actionEvent.getSource();
         updateList(Paths.get(selct.getSelectionModel().getSelectedItem()));
     }
-    public String getSelectionFileName(){
-        if(!tvClient.isFocused()){
+
+    public String getSelectionFileName() {
+        if (!tvClient.isFocused()) {
             return null;
         }
         return tvClient.getSelectionModel().getSelectedItem().getNameFile();
     }
-    public String getSelectionPath(){
+
+    public String getSelectionPath() {
         return textClient.getText();
     }
 }

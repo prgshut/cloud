@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.cloud.Controller">
     <children>
         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -11,7 +11,6 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Connect" onAction="#ConnectServer" />
                                 <MenuItem mnemonicParsing="false" text="Close" onAction="#btnExit"/>
 
                             </items>
@@ -30,13 +29,13 @@
                 </MenuBar>
 
                 <HBox VBox.vgrow="ALWAYS">
-                    <fx:include source="client.fxml" HBox.hgrow="ALWAYS" />
-                    <fx:include source="srver.fxml" HBox.hgrow="ALWAYS" />
+                    <fx:include fx:id="client" source="client.fxml" HBox.hgrow="ALWAYS" />
+                    <fx:include fx:id="server" source="server.fxml" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox prefHeight="44.0" spacing="5" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" />
+                        <Button mnemonicParsing="false" focusTraversable="false" text="Переместить" onAction="#cutFile" />
                         <Button mnemonicParsing="false" focusTraversable="false" text="Копировать" />
                         <Button mnemonicParsing="false" focusTraversable="false" text="Удалисть" />
                         <Button mnemonicParsing="false" focusTraversable="false" onAction="#btnExit" text="Выход" />

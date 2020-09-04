@@ -1,6 +1,7 @@
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -9,7 +10,7 @@ import java.sql.*;
 public class CommandAuth {
     private static ResultSet res;
 
-    public static String auth(Channel channel, ByteBuf msg, ConnectBase con){
+    public static String auth(ChannelHandlerContext channel, ByteBuf msg, ConnectBase con){
         int length=0;
         String login = null;
         String password = null;
@@ -32,19 +33,22 @@ public class CommandAuth {
             msg.readBytes(pas);
             password= new String(pas);
         }
-        final String str =String.format("SELECT user.name FROM cloud.user where user.login='%s' and user.pass='%s';", login, password);
+
+        final String str =String.format("SELECT UserName FROM name  where UserName='%s' and Password='%s';", login, password);
         res=con.select(str);
         try {
             ByteBuf buf =  ByteBufAllocator.DEFAULT.directBuffer(1);
             while (res.next()){
-                buf.writeByte((byte)1);
+                              buf.writeByte((byte)1);
                 channel.writeAndFlush(buf);
                 return res.getString("UserName");
-
             }
+
+        buf.writeByte((byte)2);
+        channel.writeAndFlush(buf);
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        e.printStackTrace();
+    }
         return null;
     }
 

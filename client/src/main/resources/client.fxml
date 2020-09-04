@@ -12,9 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PanelClient">
+<VBox  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.cloud.PanelClient">
    <children>
-
                   <HBox >
                      <children>
                         <ComboBox fx:id="cbDiskClient" onAction="#selecDisk"/>
@@ -22,8 +21,9 @@
                         <Button onAction="#upClient" mnemonicParsing="false" text="Button" />
                      </children>
                   </HBox>
-
                   <TableView fx:id="tvClient"  VBox.vgrow="ALWAYS"/>
-
    </children>
+    <properties>
+        <ctrl><fx:reference source="controller"/></ctrl>
+    </properties>
 </VBox>
