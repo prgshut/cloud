@@ -11,10 +11,10 @@ import java.nio.file.Paths;
 
 public class ReadCommand extends ChannelInboundHandlerAdapter {
 
-    private static  String nameUser;
+    private static String nameUser;
     private ConnectBase conect;
     private Path pathClient;
-    private Path defalPath =Paths.get("serverClient");
+    private Path defalPath = Paths.get("serverClient");
 
     public ReadCommand(ConnectBase connect) {
 
@@ -26,19 +26,16 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         int temp = 0;
         ByteBuf buf = (ByteBuf) msg;
-
+        System.out.println("Длина буфера до метода в начале метода" + buf.readableBytes());
         Path path;
         byte reader = buf.readByte();
 
         if (reader == Command.COMMAND_AUTH) {
             System.out.println("аутинфикация");
             nameUser = CommandAuth.auth(ctx, buf, conect);
-
             if (nameUser == null) {
                 System.out.println("Нет такого пользователя");
-
             }
-
         }
         if (nameUser != null) {
             path = Paths.get(defalPath.toString(), nameUser);
@@ -48,26 +45,26 @@ public class ReadCommand extends ChannelInboundHandlerAdapter {
             } else {
                 pathClient = path;
             }
+            System.out.println("Длина буфера до метода до условия " + buf.readableBytes());
             if (reader == Command.COMMAND_SEND_FILE) {
-                path= defalPath.resolve(OtheCommand.getPath(buf));
-                System.out.println("Go in write " +path.toString());
-                System.out.println(buf.readableBytes());
-                ProtoFileRecipient.recipientFile(path, (ByteBuf) msg,() ->{
-
-                } );
+                path = defalPath.resolve(OtheCommand.getPath(buf));
+                System.out.println("Go in write " + path.toString());
+                System.out.println("Длина буфера до метода " + buf.readableBytes());
+                System.out.println("Пришли данные " + buf.readableBytes());
+                ProtoFileRecipient.recipientFile(path, buf);
             } else if (reader == Command.COMMAND_RECIPIENT_FILE) {
                 ProtoFileSender.sendFile(path, ctx.channel(), (future) -> {
                 });
             } else if (reader == Command.COMMAND_GET_FILE_LIST) {
-                path= defalPath.resolve(OtheCommand.getPath(buf));
+                path = defalPath.resolve(OtheCommand.getPath(buf));
 //                System.out.println(path.toString());
                 CommandGetFileList.getFileList(path, ctx.channel());
-            }else if(reader== Command.COMMAND_GET_HOME_DIR){
+            } else if (reader == Command.COMMAND_GET_HOME_DIR) {
 
                 ByteBuf bufTemp = ByteBufAllocator.DEFAULT.directBuffer(4);
                 bufTemp.writeInt(nameUser.length());
                 ctx.writeAndFlush(bufTemp);
-                bufTemp=ByteBufAllocator.DEFAULT.directBuffer(nameUser.length());
+                bufTemp = ByteBufAllocator.DEFAULT.directBuffer(nameUser.length());
                 bufTemp.writeBytes(nameUser.getBytes());
                 ctx.writeAndFlush(bufTemp);
             }
